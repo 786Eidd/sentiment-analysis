@@ -1,78 +1,138 @@
-# Emotion Classification with LSTM & GloVe Embeddings
+#  Sentiment & Emotion Detection with Deep Learning
 
-This project implements a deep learning-based emotion classification system using TensorFlow/Keras. It takes in short text messages and classifies them into one of six universal emotions: **sadness, joy, love, anger, fear, or surprise**.
+This project implements a robust deep learning pipeline for **multi-class emotion classification** from short text inputs using TensorFlow/Keras. It classifies sentences into one of six universal human emotions: `sadness`, `joy`, `love`, `anger`, `fear`, and `surprise`.
+
+Built using **preprocessed GloVe word embeddings**, **LSTM neural networks**, and **custom NLP preprocessing**, the model achieves accurate, interpretable predictions suitable for chatbots, social media monitoring, or real-time sentiment feedback systems.
 
 ---
 
-## Overview
+##  Emotion Classes
 
-The system is built with:
-- **Custom preprocessing** (cleaning, tokenization)
-- **TF-IDF** and **sequential word embeddings**
-- **Pretrained GloVe vectors**
-- **Bidirectional LSTM model**
-- **Model saving and prediction interface**
+| Label | Emotion   | Example Text                      |
+|-------|-----------|-----------------------------------|
+| 0     | Sadness   | "I feel heartbroken."             |
+| 1     | Joy       | "Life is beautiful!"              |
+| 2     | Love      | "I truly adore my family."        |
+| 3     | Anger     | "This is so frustrating!"         |
+| 4     | Fear      | "I'm worried about tomorrow."     |
+| 5     | Surprise  | "Wow, that was unexpected!"       |
 
 ---
 
 ## Project Structure
-emotion_classifier/
+
+```
+emotion-classifier/
 ├── data/
-│ ├── training.csv
-│ ├── validation.csv
-│ └── test.csv
-│
-├── embeddings/
-│ └── glove.6B.200d.txt
-│
+├── embedding/
 ├── models/
-│ ├── sentiment_analysis.keras
-│ └── tokenizer.pickle
-│
-├── src/
-│ ├── preprocessing.py # Preprocess & clean dataset
-│ ├── features.py # TF-IDF & sequence features
-│ ├── model.py # LSTM model builder
-│ ├── train.py # End-to-end training pipeline
-│ └── predict.py # CLI or Streamlit interface
-│
 ├── notebooks/
-│ └── sentiment_emotion_classifier.ipynb
-│
+├── src/
 ├── README.md
 ├── requirements.txt
-└── .gitignore
-
-
----
-
-##  Emotion Labels
-
-| Label | Emotion   |
-|-------|-----------|
-| 0     | Sadness   |
-| 1     | Joy       |
-| 2     | Love      |
-| 3     | Anger     |
-| 4     | Fear      |
-| 5     | Surprise  |
+```
 
 ---
 
-## Requirements
+## Features
 
-Install required packages with:
+-  Data cleaning & tokenization using `nltk` & `re`
+-  Feature extraction using `TF-IDF` and `Keras Tokenizer`
+-  GloVe (Global Vectors) embedding integration
+-  LSTM-based emotion classification model
+-  One-hot encoding of emotion labels
+-  GPU memory limiting (optional TensorFlow optimization)
+-  Model serialization to `.keras` and tokenizer to `.pickle`
+-  Ready-to-integrate prediction function with softmax outputs
+
+---
+
+##  Getting Started
+
+### 🔧 Installation
 
 ```bash
 pip install -r requirements.txt
+```
 
-Also download GloVe embeddings (glove.6B.200d.txt) from:
-https://nlp.stanford.edu/projects/glove/
+###  Place your files like this:
+
+```
+data/
+  training.csv
+  validation.csv
+  test.csv
+
+embedding/
+  glove.6B.200d.txt
+```
+
+Download GloVe embeddings from:
+ https://nlp.stanford.edu/projects/glove/
+
+---
+
+### Training the Model
+
+```bash
+python src/train.py
+```
+
+- Model is saved as: `models/sentiment_analysis.keras`
+- Tokenizer is saved as: `models/tokenizer.pickle`
+
+---
+
+### Predicting Emotion
+
+```bash
+python src/predict.py
+```
+
+In Python:
+
+```python
+from src.predict import predict_sentiment
+predict_sentiment("I feel amazing today!")  # returns 'joy'
+```
+
+---
+
+## Model Architecture
+
+- Embedding layer (preloaded GloVe vectors)
+- LSTM (512) → LSTM (256)
+- Dense (128 + dropout) → Dense (64)
+- Output: Softmax layer with 6 classes
+
+---
+
+## Sample Results
+
+```text
+Epoch 20/20
+val_accuracy: 0.87
+train_accuracy: 0.91
+
+Example prediction:
+Input: "I'm afraid of the outcome"
+Output: fear (label 4)
+```
 
 
-##  Download Model Files
+---
 
-| File                                                             |  Description                             |
-|------------------------------------------------------------------|                                          |
-| [`sentiment_analysis.keras`](./models/sentiment_analysis.keras)  | Trained LSTM model with GloVe embeddings |
-| [`tokenizer.pickle`](./models/tokenizer.pickle)                  | Tokenizer object for sequence prediction |
+## Acknowledgements
+
+- TensorFlow/Keras
+- GloVe Embeddings (Stanford NLP)
+- NLTK
+- Inspired by Paul Ekman's Six Basic Emotions Framework
+
+---
+
+## Author
+
+**Eid M.**  
+AI/ML Engineer | NLP Enthusiast  
+[GitHub](https://github.com/786Eidd) • [LinkedIn](https://www.linkedin.com/in/eidmo/)
